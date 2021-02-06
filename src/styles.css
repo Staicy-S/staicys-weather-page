@@ -143,6 +143,19 @@ h1 .fa-cloud {
   font-size: 32px;
 }
 
+.credits p {
+  color: #5a6275;
+  padding: 15px;
+}
+
+.staicy {
+  color: #5a6275;
+}
+
+.staicy:hover {
+  color: #006ec5;
+}
+
 input {
   color: #006ec5;
   width: 100%;
@@ -170,6 +183,7 @@ ul {
 }
 
 p {
+  font-size: 16px;
   text-align: center;
   padding: 50px 0 0px 0;
   color: #006ec5;
