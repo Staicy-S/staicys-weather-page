@@ -3,6 +3,7 @@ function mainUpdateEverything(event) {
   event.preventDefault();
   let city = changeCity();
   axios.get(getApiUrl(city)).then(updateTemperature);
+  document.querySelector("#search-engine").value = "";
 }
 
 function changeCity() {
