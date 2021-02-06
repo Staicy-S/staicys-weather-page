@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="src/styles.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+  </head>
+  <body>
+    <div class="container">
+      <form>
+        <div class="searchBar">
+          <div class="searchInput">
+            <input
+              type="text"
+              id="search-engine"
+              placeholder="Enter a city..."
+              autocomplete="off"
+            />
+          </div>
+          <div class="searchIcon">
+            <button class="searchButton"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </form>
+
+      <div class="row justify-content-start">
+        <div class="col-10 defaultCity">
+          <h1>
+            <span id="default-city"> Cologne </span>
+            <i class="fas fa-cloud" id="weather-emoji"></i>
+          </div>
+          <div class="col-2 location">
+            <button class="gpsButton">
+              <i class="fas fa-map-marker-alt" id="gps"></i>
+            </button>
+            </h1>
+          
+        </div>
+      </div>
+      <h2>
+        <span class="minTempNumber">0</span><span class="minTemp">°C </span>/
+        <span class="maxTempNumber">2</span><span class="maxTemp">°C </span
+        ><span class="degreesFahrenheit" id="fahrenheit"
+          ><a href="#" class="unitConverter">|°F</a></span
+        >
+      </h2>
+      <div class="actualDayAndTime" id="current-time">
+        <p>time-placeholder</p>
+      </div>
+
+      <div class="row justify-content-start">
+        <div class="col-4 weekdays">
+          <ul>
+            <li>Tomorrow</li>
+            <li>Wednesday</li>
+            <li>Thursday</li>
+            <li>Friday</li>
+            <li>Saturday</li>
+          </ul>
+        </div>
+        <div class="col-2 clouds">
+          <ul>
+            <li><i class="fas fa-cloud"></i></li>
+            <li><i class="fas fa-cloud"></i></li>
+            <li><i class="fas fa-cloud-sun"></i></li>
+            <li><i class="fas fa-snowflake"></i></li>
+            <li><i class="fas fa-cloud"></i></li>
+          </ul>
+        </div>
+        <div class="col-5 temperatures">
+          <ul>
+            <li>-3°C / 1°C</li>
+            <li>-3°C / 2°C</li>
+            <li>-2°C / 0°C</li>
+            <li>-1°C / 0°C</li>
+            <li>-4°C / -3°C</li>
+          </ul>
+        </div>
+
+        <p>We wish you nice weather!</p>
+      </div>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/7644ebf04a.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="src/script.js"></script>
+    <script language="javascript">
+      //main();
+    </script>
+  </body>
+</html>

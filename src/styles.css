@@ -1,0 +1,176 @@
+body {
+  color: #5a6275;
+  padding: 20px 0px 20px 0px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  position: center;
+  border: solid #006ec5 4px;
+  border-radius: 10px;
+  padding: 30px 30px 5px 30px;
+  width: 430px;
+  background-color: rgba(0, 110, 197, 0.01);
+}
+
+.actualDayAndTime {
+  padding: 0px 5px 0px 5px;
+  font-weight: 600;
+  line-height: 40px;
+  font-size: 20px;
+}
+
+.weekdays,
+.clouds,
+.temperatures {
+  font-size: 22px;
+}
+
+.weekdays {
+  min-width: 140px;
+}
+
+.clouds {
+  font-weight: 600;
+}
+
+.clouds ul li {
+  color: blue;
+}
+
+.fa-cloud,
+.fa-cloud-sun,
+.fa-snowflake {
+  color: #5a6275;
+}
+
+.temperatures {
+  font-weight: 600;
+  min-width: 140px;
+}
+
+.degreesFahrenheit {
+  font-size: 13px;
+  font-weight: bold;
+  position: relative;
+  top: -10px;
+}
+
+.unitConverter {
+  text-decoration: none;
+  color: #5a6275;
+}
+
+.unitConverter:hover {
+  color: #006ec5;
+}
+
+.searchBar {
+  margin: 10px auto;
+  width: 100%;
+  height: 40px;
+  border: solid #006ec5 5px;
+  border-radius: 4px;
+}
+
+.searchInput {
+  display: inline;
+  float: left;
+  width: calc(100% - 40px);
+}
+
+.searchIcon {
+  overflow: hidden;
+  display: inline;
+  float: right;
+  width: 40px;
+}
+
+.gpsButton {
+  display: inline;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.747);
+  border: solid #006ec5 1px;
+  padding: 5px auto;
+  border-radius: 90%;
+  position: relative;
+  top: 20px;
+}
+
+#gps {
+  color: #006ec5;
+  padding: 1px;
+}
+
+.gpsButton:hover {
+  background: #006ec5;
+  transition: ease-in-out 200ms;
+}
+
+.gpsButton:hover #gps {
+  color: white;
+  transition: ease-in-out 200ms;
+}
+
+.searchIcon button {
+  display: block;
+  height: 30px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.747);
+  border: solid #006ec5 1px;
+}
+
+.searchButton:hover {
+  background: #006ec5;
+  transition: ease-in-out 200ms;
+}
+
+.searchButton:hover .fa-search {
+  color: white;
+  transition: ease-in-out 200ms;
+}
+
+.fa-search {
+  padding: 1px;
+  color: #006ec5;
+}
+
+h1 .fa-cloud {
+  padding: 0 0 0 15px;
+  font-size: 32px;
+}
+
+input {
+  color: #006ec5;
+  width: 100%;
+}
+
+h1 {
+  padding: 10px 5px 0px 5px;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 50px;
+  margin: 0 auto;
+}
+
+h2 {
+  padding: 0px 5px 0px 5px;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 50px;
+}
+
+ul {
+  line-height: 50px;
+  display: inline;
+  list-style-type: none;
+}
+
+p {
+  text-align: center;
+  padding: 50px 0 0px 0;
+  color: #006ec5;
+}
