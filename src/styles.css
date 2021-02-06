@@ -148,11 +148,13 @@ h1 .fa-cloud {
   padding: 15px;
 }
 
-.staicy {
+.staicy,
+.openSource {
   color: #5a6275;
 }
 
-.staicy:hover {
+.staicy:hover,
+.openSource:hover {
   color: #006ec5;
 }
 
