@@ -5,8 +5,9 @@ function mainUpdateEverything(event) {
   if (city === "") {
     alert("Please enter a city.");
   } else {
-    axios.get(getApiUrl(city)).then(updateTemperature);
-    document.querySelector("#search-engine").value = "";
+    axios.get(getApiUrl(city)).then(function (response) {
+      updateTemperature(response, "search");
+    });
   }
 }
 
@@ -15,11 +16,14 @@ function getApiUrl(city) {
   return `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
 }
 
-function updateTemperature(response) {
+function updateTemperature(response, origin) {
   changeToCelsius();
   displayTemperature(response.data);
   updateWeatherEmoji(response.data);
-  changeInnerHTML("#default-city", response.data.name);
+  if (origin === "search") {
+    changeInnerHTML("#default-city", response.data.name);
+    document.querySelector("#search-engine").value = "";
+  }
 }
 
 function displayTemperature(data) {
@@ -112,7 +116,9 @@ function handlePositionClick() {
 }
 
 function getWeatherForGps(position) {
-  axios.get(buildGpsApiUrl(position)).then(updateTemperature);
+  axios.get(buildGpsApiUrl(position)).then(function (response) {
+    updateTemperature(response, "gps");
+  });
   changeInnerHTML("#default-city", "Your location");
 }
 
