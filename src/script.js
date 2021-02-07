@@ -1,16 +1,9 @@
 //Temperature Updates
 function mainUpdateEverything(event) {
   event.preventDefault();
-  let city = changeCity();
+  let city = document.querySelector("#search-engine").value;
   axios.get(getApiUrl(city)).then(updateTemperature);
   document.querySelector("#search-engine").value = "";
-}
-
-function changeCity() {
-  let searchedCity = document.querySelector("#search-engine").value;
-  let newCity = searchedCity.charAt(0).toUpperCase() + searchedCity.slice(1);
-  changeInnerHTML("#default-city", newCity);
-  return newCity;
 }
 
 function getApiUrl(city) {
@@ -22,6 +15,7 @@ function updateTemperature(response) {
   changeToCelsius();
   displayTemperature(response.data);
   updateWeatherEmoji(response.data);
+  changeInnerHTML("#default-city", response.data.name);
 }
 
 function displayTemperature(data) {
@@ -100,6 +94,8 @@ function updateWeatherEmoji(data) {
     document.querySelector("#weather-emoji").className = "fas fa-bolt";
   } else if ("Fog" === weather) {
     document.querySelector("#weather-emoji").className = "fas fa-smog";
+  } else if ("Mist" === weather) {
+    document.querySelector("#weather-emoji").className = "fas fa-stream";
   } else {
     document.querySelector("#weather-emoji").className =
       "fas fa-question-circle";
