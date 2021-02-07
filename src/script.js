@@ -22,8 +22,11 @@ function updateTemperature(response, origin) {
   updateWeatherEmoji(response.data);
   if (origin === "search") {
     changeInnerHTML("#default-city", response.data.name);
-    document.querySelector("#search-engine").value = "";
   }
+  if (origin === "gps") {
+    changeInnerHTML("#default-city", "Your location");
+  }
+  document.querySelector("#search-engine").value = "";
 }
 
 function displayTemperature(data) {
@@ -119,7 +122,6 @@ function getWeatherForGps(position) {
   axios.get(buildGpsApiUrl(position)).then(function (response) {
     updateTemperature(response, "gps");
   });
-  changeInnerHTML("#default-city", "Your location");
 }
 
 function buildGpsApiUrl(position) {
