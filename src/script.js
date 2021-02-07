@@ -2,8 +2,12 @@
 function mainUpdateEverything(event) {
   event.preventDefault();
   let city = document.querySelector("#search-engine").value;
-  axios.get(getApiUrl(city)).then(updateTemperature);
-  document.querySelector("#search-engine").value = "";
+  if (city === "") {
+    alert("Please enter a city.");
+  } else {
+    axios.get(getApiUrl(city)).then(updateTemperature);
+    document.querySelector("#search-engine").value = "";
+  }
 }
 
 function getApiUrl(city) {
