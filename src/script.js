@@ -48,7 +48,7 @@ function displayTemperature(data) {
 function changeUnit(event) {
   event.preventDefault();
   let newUnit = document.querySelector(".unitConverter");
-  if (newUnit.innerHTML === "|°C") {
+  if (newUnit.innerHTML === " |°C") {
     changeToCelsius();
     celsiusCalculation();
   } else {
@@ -78,13 +78,13 @@ function celsiusCalculation() {
 }
 
 function changeToFahrenheit() {
-  changeInnerHTML(".unitConverter", `|°C`);
+  changeInnerHTML(".unitConverter", ` |°C`);
   changeInnerHTML(".minTemp", `°F`);
   changeInnerHTML(".maxTemp", `°F`);
 }
 
 function changeToCelsius() {
-  changeInnerHTML(".unitConverter", `|°F`);
+  changeInnerHTML(".unitConverter", ` |°F`);
   changeInnerHTML(".minTemp", `°C`);
   changeInnerHTML(".maxTemp", `°C`);
 }

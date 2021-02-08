@@ -60,6 +60,7 @@ body {
 }
 
 .unitConverter {
+  padding-left: 1px;
   text-decoration: none;
   color: #5a6275;
 }
