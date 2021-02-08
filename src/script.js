@@ -35,6 +35,11 @@ function updateTemperature(response, origin) {
   }
   if (origin === "gps") {
     changeInnerHTML("#default-city", "Your location");
+  } else {
+    changeInnerHTML(
+      "#default-city",
+      `${response.data.name}, ${response.data.sys.country}`
+    );
   }
   document.querySelector("#search-engine").value = "";
 }
