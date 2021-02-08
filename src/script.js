@@ -28,7 +28,10 @@ function updateTemperature(response, origin) {
   displayTemperature(response.data);
   updateWeatherEmoji(response.data);
   if (origin === "search") {
-    changeInnerHTML("#default-city", response.data.name);
+    changeInnerHTML(
+      "#default-city",
+      `${response.data.name}, ${response.data.sys.country}`
+    );
   }
   if (origin === "gps") {
     changeInnerHTML("#default-city", "Your location");
