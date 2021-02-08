@@ -5,9 +5,16 @@ function mainUpdateEverything(event) {
   if (city === "") {
     alert("Please enter a city.");
   } else {
-    axios.get(getApiUrl(city)).then(function (response) {
-      updateTemperature(response, "search");
-    });
+    axios
+      .get(getApiUrl(city))
+      .then(function (response) {
+        updateTemperature(response, "search");
+      })
+      .catch(function () {
+        alert(
+          `Unfortunately, we don't know the weather for ${city}. Please search for ${city} elsewhere.`
+        );
+      });
   }
 }
 
