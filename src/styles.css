@@ -13,7 +13,6 @@ body {
   border-radius: 10px;
   padding: 30px 30px 5px 30px;
   width: 430px;
-  background-color: rgba(0, 110, 197, 0.01);
 }
 
 .actualDayAndTime {
@@ -45,6 +44,14 @@ body {
 .fa-cloud-sun,
 .fa-snowflake {
   color: #5a6275;
+}
+
+#weather-emoji-image {
+  display: inline;
+  height: 50px;
+  width: auto;
+  position: relative;
+  top: -2px;
 }
 
 .temperatures {

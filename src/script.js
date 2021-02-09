@@ -66,8 +66,19 @@ function displayTemperature(data) {
   console.log(data);
   let tempMin = Math.round(data.main.temp_min);
   let tempMax = Math.round(data.main.temp_max);
+  let temp = Math.round(data.main.temp);
   changeInnerHTML(".minTempNumber", tempMin);
   changeInnerHTML(".maxTempNumber", tempMax);
+  if (temp > 20) {
+    document.getElementById("gradient").style.backgroundImage =
+      "linear-gradient(to top, #feada6 0%, #f5efef 100%)";
+  } else if (temp < 10) {
+    document.getElementById("gradient").style.backgroundImage =
+      "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)";
+  } else {
+    document.getElementById("gradient").style.backgroundImage =
+      "linear-gradient(to top, #dfe9f3 0%, white 100%)";
+  }
 }
 
 //Unit Updates
@@ -122,28 +133,12 @@ function changeInnerHTML(query, innerHTML) {
 }
 
 function updateWeatherEmoji(data) {
-  let weather = data.weather[0].main;
-  if ("Drizzle" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-cloud-rain";
-  } else if ("Clouds" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-cloud";
-  } else if ("Clear" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-sun";
-  } else if ("Snow" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-snowflake";
-  } else if ("Rain" === weather) {
-    document.querySelector("#weather-emoji").className =
-      "fas fa-cloud-showers-heavy";
-  } else if ("Storm" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-bolt";
-  } else if ("Fog" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-smog";
-  } else if ("Mist" === weather) {
-    document.querySelector("#weather-emoji").className = "fas fa-stream";
-  } else {
-    document.querySelector("#weather-emoji").className =
-      "fas fa-question-circle";
-  }
+  let iconElement = document.querySelector("#weather-emoji-image");
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+  );
+  iconElement.setAttribute("alt", data.weather[0].description);
 }
 
 //GPS Weather
