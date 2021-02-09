@@ -42,6 +42,24 @@ function updateTemperature(response, origin) {
     );
   }
   document.querySelector("#search-engine").value = "";
+  updateToLocalTime(response.data);
+}
+
+function updateToLocalTime(data) {
+  let localDate = new Date();
+  let utcDate = localDate.getUTCDate();
+  let utcHours = localDate.getUTCHours();
+  let utcMinutes = localDate.getUTCMinutes();
+  let offset = data.timezone;
+
+  let minutesToAdd = (offset / 60) % 60;
+  let hourCarryOver = Math.floor((utcMinutes + minutesToAdd) / 60);
+  let hoursToAdd = Math.floor(offset / 60 / 60);
+  let daysCarryOver = Math.floor((utcHours + hoursToAdd) / 24);
+  let localMinutes = (utcMinutes + minutesToAdd) % 60;
+  let localHours = (utcHours + hoursToAdd + hourCarryOver + 24) % 24;
+  let localDays = (utcDate + daysCarryOver) % 7;
+  provideTime(localDays, localHours, localMinutes);
 }
 
 function displayTemperature(data) {
@@ -146,11 +164,8 @@ function buildGpsApiUrl(position) {
   return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&&units=metric`;
 }
 
-function defaultContent() {
-  let now = new Date();
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  let days = [
+function provideTime(days, hours, minutes) {
+  let weekDays = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -159,7 +174,7 @@ function defaultContent() {
     "Friday",
     "Saturday",
   ];
-  let day = days[now.getDay()]; // 0, 1, 2
+  let day = weekDays[days];
 
   if (hours < 10) {
     hours = `0${hours}`;
@@ -167,8 +182,11 @@ function defaultContent() {
   if (minutes < 10) {
     minutes = `0${minutes}`;
   }
-  axios.get(getApiUrl("Cologne")).then(updateTemperature);
   changeInnerHTML("#current-time", `${day}, ${hours}:${minutes}`);
+}
+
+function defaultContent() {
+  axios.get(getApiUrl("Cologne")).then(updateTemperature);
 }
 
 defaultContent();
