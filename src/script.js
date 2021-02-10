@@ -97,40 +97,32 @@ function changeUnit(event) {
   let newUnit = document.querySelector(".unitConverter");
   if (newUnit.innerHTML === " |°C") {
     changeToCelsius();
-    celsiusCalculation();
   } else {
     changeToFahrenheit();
-    fahrenheitCalculation();
   }
 }
 
-function fahrenheitCalculation() {
-  let tempMin = document.querySelector(".minTempNumber").innerHTML;
-  let fahrenheitConvertionTempMin = Math.round(1.8 * tempMin + 32);
-  changeInnerHTML(".minTempNumber", fahrenheitConvertionTempMin);
-
-  let tempMax = document.querySelector(".maxTempNumber").innerHTML;
-  let fahrenheitConvertionTempMax = Math.round(1.8 * tempMax + 32);
-  changeInnerHTML(".maxTempNumber", fahrenheitConvertionTempMax);
+function changeElementToFahrenheit(query) {
+  let temp = document.querySelector(query).innerHTML;
+  changeInnerHTML(query, Math.round(1.8 * temp + 32));
 }
 
-function celsiusCalculation() {
-  let tempMin = document.querySelector(".minTempNumber").innerHTML;
-  let celsiusConvertionTempMin = Math.round(((tempMin - 32) * 5) / 9);
-  changeInnerHTML(".minTempNumber", celsiusConvertionTempMin);
-
-  let tempMax = document.querySelector(".maxTempNumber").innerHTML;
-  let celsiusConvertionTempMax = Math.round(((tempMax - 32) * 5) / 9);
-  changeInnerHTML(".maxTempNumber", celsiusConvertionTempMax);
+function changeElementToCelsius(query) {
+  let temp = document.querySelector(query).innerHTML;
+  changeInnerHTML(query, Math.round(((temp - 32) * 5) / 9));
 }
 
 function changeToFahrenheit() {
+  changeElementToFahrenheit(".minTempNumber");
+  changeElementToFahrenheit(".maxTempNumber");
   changeInnerHTML(".unitConverter", ` |°C`);
   changeInnerHTML(".minTemp", `°F`);
   changeInnerHTML(".maxTemp", `°F`);
 }
 
 function changeToCelsius() {
+  changeElementToCelsius(".minTempNumber");
+  changeElementToCelsius(".maxTempNumber");
   changeInnerHTML(".unitConverter", ` |°F`);
   changeInnerHTML(".minTemp", `°C`);
   changeInnerHTML(".maxTemp", `°C`);
@@ -197,11 +189,11 @@ function defaultContent() {
   axios.get(getApiUrl("Cologne")).then(updateTemperature);
 }
 
-function findForecastTemp(response, centralIndex) {
+function findForecastTemp(weatherList, centralIndex) {
   let tempMin = 99;
   let tempMax = -99;
   for (let index = centralIndex - 4; index < centralIndex + 5; index++) {
-    let temp = response.data.list[index].main.temp;
+    let temp = weatherList[index].main.temp;
     // min temp
     if (temp < tempMin) {
       tempMin = temp;
@@ -217,55 +209,58 @@ function findForecastTemp(response, centralIndex) {
 }
 
 function displayWeatherForecast(response, localTime) {
+  let weatherList = response.data.list;
   let firstIndex = 11 - Math.floor(localTime.hours / 3);
 
-  let completeTemp0 = findForecastTemp(response, firstIndex);
+  let completeTemp0 = findForecastTemp(weatherList, firstIndex);
   changeInnerHTML("#temp-min-0", completeTemp0.tempMin);
   changeInnerHTML("#temp-max-0", completeTemp0.tempMax);
 
   let secondIndex = firstIndex + 8;
-  let completeTemp1 = findForecastTemp(response, secondIndex);
+  let completeTemp1 = findForecastTemp(weatherList, secondIndex);
   changeInnerHTML("#temp-min-1", completeTemp1.tempMin);
   changeInnerHTML("#temp-max-1", completeTemp1.tempMax);
 
   let thirdIndex = secondIndex + 8;
-  let completeTemp2 = findForecastTemp(response, thirdIndex);
+  let completeTemp2 = findForecastTemp(weatherList, thirdIndex);
   changeInnerHTML("#temp-min-2", completeTemp2.tempMin);
   changeInnerHTML("#temp-max-2", completeTemp2.tempMax);
 
   let fourthIndex = thirdIndex + 8;
-  let completeTemp3 = findForecastTemp(response, fourthIndex);
+  let completeTemp3 = findForecastTemp(weatherList, fourthIndex);
   changeInnerHTML("#temp-min-3", completeTemp3.tempMin);
   changeInnerHTML("#temp-max-3", completeTemp3.tempMax);
 
-  //icon stuff
-  let icon0 = response.data.list[firstIndex].weather[0].icon;
-  let description0 = response.data.list[firstIndex].weather[0].description;
-  updateWeatherEmoji("#forecast-0-icon", icon0, description0);
+  updateWeatherEmoji(
+    "#forecast-0-icon",
+    weatherList[firstIndex].weather[0].icon,
+    weatherList[firstIndex].weather[0].description
+  );
 
-  let icon1 = response.data.list[firstIndex + 8].weather[0].icon;
-  let description1 = response.data.list[firstIndex + 8].weather[0].description;
-  updateWeatherEmoji("#forecast-1-icon", icon1, description1);
+  updateWeatherEmoji(
+    "#forecast-1-icon",
+    weatherList[firstIndex + 8].weather[0].icon,
+    weatherList[firstIndex + 8].weather[0].description
+  );
 
-  let icon2 = response.data.list[firstIndex + 16].weather[0].icon;
-  let description2 = response.data.list[firstIndex + 16].weather[0].description;
-  updateWeatherEmoji("#forecast-2-icon", icon2, description2);
+  updateWeatherEmoji(
+    "#forecast-2-icon",
+    weatherList[firstIndex + 16].weather[0].icon,
+    weatherList[firstIndex + 16].weather[0].description
+  );
 
-  let icon3 = response.data.list[firstIndex + 24].weather[0].icon;
-  let description3 = response.data.list[firstIndex + 24].weather[0].description;
-  updateWeatherEmoji("#forecast-3-icon", icon3, description3);
+  updateWeatherEmoji(
+    "#forecast-3-icon",
+    weatherList[firstIndex + 24].weather[0].icon,
+    weatherList[firstIndex + 24].weather[0].description
+  );
 
   //update forecast day
   let localDays = localTime.days;
-  let tomorrow = provideWeekday((localDays + 1) % 7);
-  let day3 = provideWeekday((localDays + 2) % 7);
-  let day4 = provideWeekday((localDays + 3) % 7);
-  let day5 = provideWeekday((localDays + 4) % 7);
-  //changeInnerHTML("#forecast-day-0", today);
-  changeInnerHTML("#forecast-day-0", tomorrow);
-  changeInnerHTML("#forecast-day-1", day3);
-  changeInnerHTML("#forecast-day-2", day4);
-  changeInnerHTML("#forecast-day-3", day5);
+  changeInnerHTML("#forecast-day-0", provideWeekday((localDays + 1) % 7));
+  changeInnerHTML("#forecast-day-1", provideWeekday((localDays + 2) % 7));
+  changeInnerHTML("#forecast-day-2", provideWeekday((localDays + 3) % 7));
+  changeInnerHTML("#forecast-day-3", provideWeekday((localDays + 4) % 7));
 }
 
 function getWeatherForecast(city, localTime) {

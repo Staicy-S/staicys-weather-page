@@ -28,24 +28,6 @@ body {
   font-size: 22px;
 }
 
-.weekdays {
-  min-width: 140px;
-}
-
-.clouds {
-  font-weight: 600;
-}
-
-.clouds ul li {
-  color: blue;
-}
-
-.fa-cloud,
-.fa-cloud-sun,
-.fa-snowflake {
-  color: #5a6275;
-}
-
 .forecastIcons {
   display: inline;
   height: 42px;
@@ -54,8 +36,8 @@ body {
   width: auto;
 }
 
-.forecastTemp {
-  padding-left: 10px;
+.temperatures ul li {
+  padding-left: 20px;
 }
 
 #weather-emoji-image {
