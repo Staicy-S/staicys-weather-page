@@ -102,30 +102,42 @@ function changeUnit(event) {
   }
 }
 
-function changeElementToFahrenheit(query) {
-  let temp = document.querySelector(query).innerHTML;
-  changeInnerHTML(query, Math.round(1.8 * temp + 32));
+function changeElementToCelsius(element) {
+  let temp = element.innerHTML;
+  element.innerHTML = Math.round(((temp - 32) * 5) / 9);
 }
 
-function changeElementToCelsius(query) {
-  let temp = document.querySelector(query).innerHTML;
-  changeInnerHTML(query, Math.round(((temp - 32) * 5) / 9));
+function changeElementToFahrenheit(element) {
+  let temp = element.innerHTML;
+  element.innerHTML = Math.round(1.8 * temp + 32);
 }
 
 function changeToFahrenheit() {
-  changeElementToFahrenheit(".minTempNumber");
-  changeElementToFahrenheit(".maxTempNumber");
   changeInnerHTML(".unitConverter", ` |°C`);
-  changeInnerHTML(".minTemp", `°F`);
-  changeInnerHTML(".maxTemp", `°F`);
+
+  var allTemps = document.querySelectorAll(".allTemp");
+  for (let index = 0; index < allTemps.length; index++) {
+    changeElementToFahrenheit(allTemps[index]);
+  }
+
+  var allUnits = document.querySelectorAll(".allUnits");
+  for (let index = 0; index < allUnits.length; index++) {
+    allUnits[index].innerHTML = `°F`;
+  }
 }
 
 function changeToCelsius() {
-  changeElementToCelsius(".minTempNumber");
-  changeElementToCelsius(".maxTempNumber");
   changeInnerHTML(".unitConverter", ` |°F`);
-  changeInnerHTML(".minTemp", `°C`);
-  changeInnerHTML(".maxTemp", `°C`);
+
+  var allTemps = document.querySelectorAll(".allTemp");
+  for (let index = 0; index < allTemps.length; index++) {
+    changeElementToCelsius(allTemps[index]);
+  }
+
+  var allUnits = document.querySelectorAll(".allUnits");
+  for (let index = 0; index < allUnits.length; index++) {
+    allUnits[index].innerHTML = `°C`;
+  }
 }
 
 //Changing the display on the page
