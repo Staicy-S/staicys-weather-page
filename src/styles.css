@@ -46,6 +46,18 @@ body {
   color: #5a6275;
 }
 
+.forecastIcons {
+  display: inline;
+  height: 42px;
+  position: relative;
+  top: -1px;
+  width: auto;
+}
+
+.forecastTemp {
+  padding-left: 10px;
+}
+
 #weather-emoji-image {
   display: inline;
   height: 50px;

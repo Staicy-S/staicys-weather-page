@@ -12,7 +12,6 @@
     />
     <link rel="stylesheet" href="src/styles.css" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    
   </head>
   <body>
     <div class="container" id="gradient">
@@ -36,14 +35,13 @@
         <div class="col-10 defaultCity">
           <h1>
             <span id="default-city"> Cologne </span>
-            <img id="weather-emoji-image" src="" alt="">
-          </div>
-          <div class="col-2 location">
-            <button class="gpsButton">
-              <i class="fas fa-map-marker-alt" id="gps"></i>
-            </button>
-            </h1>
-          
+            <img id="weather-emoji-image" src="" alt="" />
+          </h1>
+        </div>
+        <div class="col-2 location">
+          <button class="gpsButton">
+            <i class="fas fa-map-marker-alt" id="gps"></i>
+          </button>
         </div>
       </div>
       <h2>
@@ -60,29 +58,58 @@
       <div class="row justify-content-start">
         <div class="col-4 weekdays">
           <ul>
-            <li>Tomorrow</li>
-            <li>Wednesday</li>
-            <li>Thursday</li>
-            <li>Friday</li>
-            <li>Saturday</li>
+            <li id="forecast-day-0">Tomorrow</li>
+            <li id="forecast-day-1"></li>
+            <li id="forecast-day-2"></li>
+            <li id="forecast-day-3"></li>
           </ul>
         </div>
         <div class="col-2 clouds">
           <ul>
-            <li><i class="fas fa-cloud"></i></li>
-            <li><i class="fas fa-cloud"></i></li>
-            <li><i class="fas fa-cloud-sun"></i></li>
-            <li><i class="fas fa-snowflake"></i></li>
-            <li><i class="fas fa-cloud"></i></li>
+            <li>
+              <img id="forecast-0-icon" class="forecastIcons" src="" alt="" />
+            </li>
+            <li>
+              <img id="forecast-1-icon" class="forecastIcons" src="" alt="" />
+            </li>
+            <li>
+              <img id="forecast-2-icon" class="forecastIcons" src="" alt="" />
+            </li>
+            <li>
+              <img id="forecast-3-icon" class="forecastIcons" src="" alt="" />
+            </li>
           </ul>
         </div>
         <div class="col-5 temperatures">
           <ul>
-            <li>-3°C / 1°C</li>
-            <li>-3°C / 2°C</li>
-            <li>-2°C / 0°C</li>
-            <li>-1°C / 0°C</li>
-            <li>-4°C / -3°C</li>
+            <li>
+              <span id="temp-min-0" class="forecastTemp">-3</span>°C /<span
+                id="temp-max-0"
+                class="forecastTemp"
+                >1</span
+              >°C
+            </li>
+            <li>
+              <span id="temp-min-1" class="forecastTemp">-3</span>°C /<span
+                id="temp-max-1"
+                class="forecastTemp"
+                >1</span
+              >°C
+            </li>
+            <li>
+              <span id="temp-min-2" class="forecastTemp">-3</span>°C /<span
+                id="temp-max-2"
+                class="forecastTemp"
+                >1</span
+              >°C
+            </li>
+            <li>
+              <span id="temp-min-3" class="forecastTemp">-3</span>°C /<span
+                id="temp-max-3"
+                class="forecastTemp"
+                >1</span
+              >°C
+            </li>
           </ul>
         </div>
 
@@ -90,10 +117,22 @@
       </div>
     </div>
     <div class="credits">
-    <p> 
-      <a href="https://github.com/Staicy-S/staicys-weather-page" class="openSource" target="_blank">Open-source code</a>
-       by <a href="https://www.linkedin.com/in/staicy-stadtler-21a131203/" class="staicy" target="_blank"> Staicy Stadtler</a>
-    </p>
+      <p>
+        <a
+          href="https://github.com/Staicy-S/staicys-weather-page"
+          class="openSource"
+          target="_blank"
+          >Open-source code</a
+        >
+        by
+        <a
+          href="https://www.linkedin.com/in/staicy-stadtler-21a131203/"
+          class="staicy"
+          target="_blank"
+        >
+          Staicy Stadtler</a
+        >
+      </p>
     </div>
     <script
       src="https://kit.fontawesome.com/7644ebf04a.js"

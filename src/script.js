@@ -26,7 +26,11 @@ function getApiUrl(city) {
 function updateTemperature(response, origin) {
   changeToCelsius();
   displayTemperature(response.data);
-  updateWeatherEmoji(response.data);
+  updateWeatherEmoji(
+    "#weather-emoji-image",
+    response.data.weather[0].icon,
+    response.data.weather[0].description
+  );
   if (origin === "search") {
     changeInnerHTML(
       "#default-city",
@@ -42,7 +46,8 @@ function updateTemperature(response, origin) {
     );
   }
   document.querySelector("#search-engine").value = "";
-  updateToLocalTime(response.data);
+  let localTime = updateToLocalTime(response.data);
+  getWeatherForecast(response.data.name, localTime);
 }
 
 function updateToLocalTime(data) {
@@ -59,7 +64,12 @@ function updateToLocalTime(data) {
   let localMinutes = (utcMinutes + minutesToAdd) % 60;
   let localHours = (utcHours + hoursToAdd + hourCarryOver + 24) % 24;
   let localDays = (utcDate + daysCarryOver) % 7;
+  var localTime = new Object();
+  localTime.days = localDays;
+  localTime.hours = localHours;
+  localTime.minutes = localMinutes;
   provideTime(localDays, localHours, localMinutes);
+  return localTime;
 }
 
 function displayTemperature(data) {
@@ -132,13 +142,13 @@ function changeInnerHTML(query, innerHTML) {
   htmlElement.innerHTML = innerHTML;
 }
 
-function updateWeatherEmoji(data) {
-  let iconElement = document.querySelector("#weather-emoji-image");
+function updateWeatherEmoji(query, icon, description) {
+  let iconElement = document.querySelector(query);
   iconElement.setAttribute(
     "src",
-    `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+    `http://openweathermap.org/img/wn/${icon}@2x.png`
   );
-  iconElement.setAttribute("alt", data.weather[0].description);
+  iconElement.setAttribute("alt", description);
 }
 
 //GPS Weather
@@ -159,7 +169,7 @@ function buildGpsApiUrl(position) {
   return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&&units=metric`;
 }
 
-function provideTime(days, hours, minutes) {
+function provideWeekday(number) {
   let weekDays = [
     "Sunday",
     "Monday",
@@ -169,8 +179,11 @@ function provideTime(days, hours, minutes) {
     "Friday",
     "Saturday",
   ];
-  let day = weekDays[days];
+  return weekDays[number];
+}
 
+function provideTime(days, hours, minutes) {
+  let day = provideWeekday(days);
   if (hours < 10) {
     hours = `0${hours}`;
   }
@@ -182,6 +195,85 @@ function provideTime(days, hours, minutes) {
 
 function defaultContent() {
   axios.get(getApiUrl("Cologne")).then(updateTemperature);
+}
+
+function findForecastTemp(response, centralIndex) {
+  let tempMin = 99;
+  let tempMax = -99;
+  for (let index = centralIndex - 4; index < centralIndex + 5; index++) {
+    let temp = response.data.list[index].main.temp;
+    // min temp
+    if (temp < tempMin) {
+      tempMin = temp;
+    }
+    if (temp > tempMax) {
+      tempMax = temp;
+    }
+  }
+  var completeTemp = new Object();
+  completeTemp.tempMin = Math.round(tempMin);
+  completeTemp.tempMax = Math.round(tempMax);
+  return completeTemp;
+}
+
+function displayWeatherForecast(response, localTime) {
+  let firstIndex = 11 - Math.floor(localTime.hours / 3);
+
+  let completeTemp0 = findForecastTemp(response, firstIndex);
+  changeInnerHTML("#temp-min-0", completeTemp0.tempMin);
+  changeInnerHTML("#temp-max-0", completeTemp0.tempMax);
+
+  let secondIndex = firstIndex + 8;
+  let completeTemp1 = findForecastTemp(response, secondIndex);
+  changeInnerHTML("#temp-min-1", completeTemp1.tempMin);
+  changeInnerHTML("#temp-max-1", completeTemp1.tempMax);
+
+  let thirdIndex = secondIndex + 8;
+  let completeTemp2 = findForecastTemp(response, thirdIndex);
+  changeInnerHTML("#temp-min-2", completeTemp2.tempMin);
+  changeInnerHTML("#temp-max-2", completeTemp2.tempMax);
+
+  let fourthIndex = thirdIndex + 8;
+  let completeTemp3 = findForecastTemp(response, fourthIndex);
+  changeInnerHTML("#temp-min-3", completeTemp3.tempMin);
+  changeInnerHTML("#temp-max-3", completeTemp3.tempMax);
+
+  //icon stuff
+  let icon0 = response.data.list[firstIndex].weather[0].icon;
+  let description0 = response.data.list[firstIndex].weather[0].description;
+  updateWeatherEmoji("#forecast-0-icon", icon0, description0);
+
+  let icon1 = response.data.list[firstIndex + 8].weather[0].icon;
+  let description1 = response.data.list[firstIndex + 8].weather[0].description;
+  updateWeatherEmoji("#forecast-1-icon", icon1, description1);
+
+  let icon2 = response.data.list[firstIndex + 16].weather[0].icon;
+  let description2 = response.data.list[firstIndex + 16].weather[0].description;
+  updateWeatherEmoji("#forecast-2-icon", icon2, description2);
+
+  let icon3 = response.data.list[firstIndex + 24].weather[0].icon;
+  let description3 = response.data.list[firstIndex + 24].weather[0].description;
+  updateWeatherEmoji("#forecast-3-icon", icon3, description3);
+
+  //update forecast day
+  let localDays = localTime.days;
+  let tomorrow = provideWeekday((localDays + 1) % 7);
+  let day3 = provideWeekday((localDays + 2) % 7);
+  let day4 = provideWeekday((localDays + 3) % 7);
+  let day5 = provideWeekday((localDays + 4) % 7);
+  //changeInnerHTML("#forecast-day-0", today);
+  changeInnerHTML("#forecast-day-0", tomorrow);
+  changeInnerHTML("#forecast-day-1", day3);
+  changeInnerHTML("#forecast-day-2", day4);
+  changeInnerHTML("#forecast-day-3", day5);
+}
+
+function getWeatherForecast(city, localTime) {
+  let apiKey = "ec993fa98c77b985fc9c225a40d800db";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&&units=metric`;
+  axios.get(apiUrl).then(function (response) {
+    displayWeatherForecast(response, localTime);
+  });
 }
 
 defaultContent();
