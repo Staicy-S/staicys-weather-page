@@ -45,6 +45,7 @@ function updateTemperature(response, origin) {
       `${response.data.name}, ${response.data.sys.country}`
     );
   }
+  updateWeatherDetails(response.data);
   document.querySelector("#search-engine").value = "";
   let localTime = updateToLocalTime(response.data);
   getWeatherForecast(response.data.name, localTime);
@@ -153,6 +154,15 @@ function updateWeatherEmoji(query, icon, description) {
     `http://openweathermap.org/img/wn/${icon}@2x.png`
   );
   iconElement.setAttribute("alt", description);
+}
+
+function updateWeatherDetails(data) {
+  document.querySelector("#description").innerHTML =
+    data.weather[0].description;
+  document.querySelector("#wind-speed").innerHTML = Math.round(data.wind.speed);
+  document.querySelector("#feels-like").innerHTML = Math.round(
+    data.main.feels_like
+  );
 }
 
 //GPS Weather

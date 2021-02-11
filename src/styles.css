@@ -23,10 +23,19 @@ body {
   font-size: 20px;
 }
 
+.weatherDetails {
+  font-size: 18px;
+  font-weight: 600;
+  color: #5a6275;
+  text-align: left;
+  padding-left: 5px;
+}
+
 .weekdays,
 .clouds,
 .temperatures {
   font-size: 22px;
+  padding-left: 16px;
 }
 
 .forecastIcons {
@@ -148,6 +157,7 @@ h1 .fa-cloud {
 
 .credits p {
   color: #5a6275;
+  text-align: center;
   padding: 15px;
 }
 
@@ -159,6 +169,15 @@ h1 .fa-cloud {
 .staicy:hover,
 .openSource:hover {
   color: #006ec5;
+}
+
+#description {
+  font-size: 22px;
+  display: block;
+}
+
+#description:first-letter {
+  text-transform: uppercase;
 }
 
 input {
@@ -175,7 +194,7 @@ h1 {
 }
 
 h2 {
-  padding: 0px 5px 0px 5px;
+  padding: 0px 5px 0px 4px;
   font-weight: 600;
   font-size: 28px;
   line-height: 50px;
@@ -187,7 +206,7 @@ ul {
   list-style-type: none;
 }
 
-p {
+#wishes {
   font-size: 16px;
   text-align: center;
   padding: 50px 0 0px 0;
