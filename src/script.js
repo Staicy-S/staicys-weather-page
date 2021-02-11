@@ -84,10 +84,10 @@ function displayTemperature(data) {
       "linear-gradient(to top, #feada6 0%, #f5efef 100%)";
   } else if (temp < 10) {
     document.getElementById("gradient").style.backgroundImage =
-      "linear-gradient(to top, #fff1eb 0%, #ace0f9 100%)";
+      "linear-gradient(to top, #5ee7df 0%, #b490ca 100%)";
   } else {
     document.getElementById("gradient").style.backgroundImage =
-      "linear-gradient(to top, #dfe9f3 0%, white 100%)";
+      "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)";
   }
 }
 
