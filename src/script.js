@@ -1,4 +1,4 @@
-//Temperature Updates
+//Main function covering three possible cases. Getting a city either from the search bar, the gps button, or not knowing the searched city.
 function mainUpdateEverything(event) {
   event.preventDefault();
   let city = document.querySelector("#search-engine").value;
@@ -18,15 +18,17 @@ function mainUpdateEverything(event) {
   }
 }
 
+//creates the api url for the weather of the desired city
 function getApiUrl(city) {
   let apiKey = "ec993fa98c77b985fc9c225a40d800db";
   return `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
 }
 
+//updates the information on the page depending on the origin - gps button or search bar
 function updateTemperature(response, origin) {
-  changeToCelsius();
-  displayTemperature(response.data);
-  updateWeatherEmoji(
+  changeToCelsius(); //resets the unit to celsius to avoid steadily increasing temperatures
+  displayTemperature(response.data); //displays the temperature of today
+  updateWeatherIcon(
     "#weather-emoji-image",
     response.data.weather[0].icon,
     response.data.weather[0].description
@@ -46,18 +48,23 @@ function updateTemperature(response, origin) {
     );
   }
   updateWeatherDetails(response.data);
-  document.querySelector("#search-engine").value = "";
+  document.querySelector("#search-engine").value = ""; //empties the searchbar
   let localTime = updateToLocalTime(response.data);
+  //uses the city and localtime to provide a daily weatherforecast
   getWeatherForecast(response.data.name, localTime);
 }
 
+//calculation to get the local time of the place searched
 function updateToLocalTime(data) {
+  //getting the UTC time and date
   let localDate = new Date();
   let utcDate = localDate.getUTCDate();
   let utcHours = localDate.getUTCHours();
   let utcMinutes = localDate.getUTCMinutes();
+  //using the timezone offset of the searched city to find its actual time
   let offset = data.timezone;
 
+  //calculating the local day and time of the searched place
   let minutesToAdd = (offset / 60) % 60;
   let hourCarryOver = Math.floor((utcMinutes + minutesToAdd) / 60);
   let hoursToAdd = Math.floor(offset / 60 / 60);
@@ -65,6 +72,7 @@ function updateToLocalTime(data) {
   let localMinutes = (utcMinutes + minutesToAdd) % 60;
   let localHours = (utcHours + hoursToAdd + hourCarryOver + 24) % 24;
   let localDays = (utcDate + daysCarryOver) % 7;
+  //defining an object to return several information to be later used by getWeatherForecast()
   var localTime = new Object();
   localTime.days = localDays;
   localTime.hours = localHours;
@@ -73,13 +81,12 @@ function updateToLocalTime(data) {
   return localTime;
 }
 
+//displays the temperatures of today
 function displayTemperature(data) {
-  console.log(data);
-  let tempMin = Math.round(data.main.temp_min);
-  let tempMax = Math.round(data.main.temp_max);
+  changeInnerHTML(".minTempNumber", Math.round(data.main.temp_min));
+  changeInnerHTML(".maxTempNumber", Math.round(data.main.temp_max));
   let temp = Math.round(data.main.temp);
-  changeInnerHTML(".minTempNumber", tempMin);
-  changeInnerHTML(".maxTempNumber", tempMax);
+  //depending on the temperature the background gradient of the box is changed
   if (temp > 20) {
     document.getElementById("gradient").style.backgroundImage =
       "linear-gradient(to top, #feada6 0%, #f5efef 100%)";
@@ -92,10 +99,12 @@ function displayTemperature(data) {
   }
 }
 
-//Unit Updates
+//updating the units
 function changeUnit(event) {
   event.preventDefault();
   let newUnit = document.querySelector(".unitConverter");
+  //differentiate between which function needs to be called - transformation to celsius or fahrenheit
+  //avoids steadily rising temperatures
   if (newUnit.innerHTML === " |°C") {
     changeToCelsius();
   } else {
@@ -103,20 +112,24 @@ function changeUnit(event) {
   }
 }
 
+//calculating the temperature to celcius
 function changeElementToCelsius(element) {
   let temp = element.innerHTML;
   element.innerHTML = Math.round(((temp - 32) * 5) / 9);
 }
 
+//calculating the temperature to fahrenheit
 function changeElementToFahrenheit(element) {
   let temp = element.innerHTML;
   element.innerHTML = Math.round(1.8 * temp + 32);
 }
 
+//changes all units to fahrenheit
 function changeToFahrenheit() {
   changeInnerHTML(".unitConverter", ` |°C`);
 
   var allTemps = document.querySelectorAll(".allTemp");
+  //calls function to calculate all temperatures in fahrenheit
   for (let index = 0; index < allTemps.length; index++) {
     changeElementToFahrenheit(allTemps[index]);
   }
@@ -127,10 +140,12 @@ function changeToFahrenheit() {
   }
 }
 
+//changes all units (back) to celsius
 function changeToCelsius() {
   changeInnerHTML(".unitConverter", ` |°F`);
 
   var allTemps = document.querySelectorAll(".allTemp");
+  //calls function to calculate all temperatures in celsius
   for (let index = 0; index < allTemps.length; index++) {
     changeElementToCelsius(allTemps[index]);
   }
@@ -141,13 +156,8 @@ function changeToCelsius() {
   }
 }
 
-//Changing the display on the page
-function changeInnerHTML(query, innerHTML) {
-  let htmlElement = document.querySelector(query);
-  htmlElement.innerHTML = innerHTML;
-}
-
-function updateWeatherEmoji(query, icon, description) {
+//assigns the correct weather icon to the weather condition
+function updateWeatherIcon(query, icon, description) {
   let iconElement = document.querySelector(query);
   iconElement.setAttribute(
     "src",
@@ -156,13 +166,12 @@ function updateWeatherEmoji(query, icon, description) {
   iconElement.setAttribute("alt", description);
 }
 
+//displaying further weather details on the page
 function updateWeatherDetails(data) {
-  document.querySelector("#description").innerHTML =
-    data.weather[0].description;
-  document.querySelector("#wind-speed").innerHTML = Math.round(data.wind.speed);
-  document.querySelector("#feels-like").innerHTML = Math.round(
-    data.main.feels_like
-  );
+  changeInnerHTML("#description", data.weather[0].description);
+  changeInnerHTML("#wind-speed", Math.round(data.wind.speed));
+  changeInnerHTML("#feels-like", Math.round(data.main.feels_like));
+  //displaying a warning sign for high wind speeds
   let windSpeed = data.wind.speed;
   if (windSpeed > 39) {
     document.querySelector(".warning").className =
@@ -175,12 +184,14 @@ function handlePositionClick() {
   navigator.geolocation.getCurrentPosition(getWeatherForGps);
 }
 
+//getting the information for the gps weather
 function getWeatherForGps(position) {
   axios.get(buildGpsApiUrl(position)).then(function (response) {
     updateTemperature(response, "gps");
   });
 }
 
+//builds the api url for the gps weather depending on the location of the user
 function buildGpsApiUrl(position) {
   let latitude = position.coords.latitude;
   let longitude = position.coords.longitude;
@@ -188,6 +199,7 @@ function buildGpsApiUrl(position) {
   return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&&units=metric`;
 }
 
+//transforming the number of the given day to an actual weekday
 function provideWeekday(number) {
   let weekDays = [
     "Sunday",
@@ -201,6 +213,7 @@ function provideWeekday(number) {
   return weekDays[number];
 }
 
+//displaying the time and day correctly
 function provideTime(days, hours, minutes) {
   let day = provideWeekday(days);
   if (hours < 10) {
@@ -212,10 +225,7 @@ function provideTime(days, hours, minutes) {
   changeInnerHTML("#current-time", `${day}, ${hours}:${minutes}`);
 }
 
-function defaultContent() {
-  axios.get(getApiUrl("Cologne")).then(updateTemperature);
-}
-
+//finding the minimum and maximum temperature of a given day
 function findForecastTemp(weatherList, centralIndex) {
   let tempMin = 99;
   let tempMax = -99;
@@ -229,20 +239,24 @@ function findForecastTemp(weatherList, centralIndex) {
       tempMax = temp;
     }
   }
+  //creating an object containing the results of the minimum and maximum temperature
   var completeTemp = new Object();
   completeTemp.tempMin = Math.round(tempMin);
   completeTemp.tempMax = Math.round(tempMax);
   return completeTemp;
 }
 
+//gets the weather forecast at 12 o clock for the next days
 function displayWeatherForecast(response, localTime) {
   let weatherList = response.data.list;
+  //calculates where to start the forecast to start at the next day at 12 o clock
   let firstIndex = 11 - Math.floor(localTime.hours / 3);
 
   let completeTemp0 = findForecastTemp(weatherList, firstIndex);
   changeInnerHTML("#temp-min-0", completeTemp0.tempMin);
   changeInnerHTML("#temp-max-0", completeTemp0.tempMax);
 
+  //+8 because it skips 24 hours to the subsequent day at 12 o clock
   let secondIndex = firstIndex + 8;
   let completeTemp1 = findForecastTemp(weatherList, secondIndex);
   changeInnerHTML("#temp-min-1", completeTemp1.tempMin);
@@ -258,25 +272,26 @@ function displayWeatherForecast(response, localTime) {
   changeInnerHTML("#temp-min-3", completeTemp3.tempMin);
   changeInnerHTML("#temp-max-3", completeTemp3.tempMax);
 
-  updateWeatherEmoji(
+  //uses the previously found information to update the forecast icon and an emergency in case the images do not load
+  updateWeatherIcon(
     "#forecast-0-icon",
     weatherList[firstIndex].weather[0].icon,
     weatherList[firstIndex].weather[0].description
   );
 
-  updateWeatherEmoji(
+  updateWeatherIcon(
     "#forecast-1-icon",
     weatherList[firstIndex + 8].weather[0].icon,
     weatherList[firstIndex + 8].weather[0].description
   );
 
-  updateWeatherEmoji(
+  updateWeatherIcon(
     "#forecast-2-icon",
     weatherList[firstIndex + 16].weather[0].icon,
     weatherList[firstIndex + 16].weather[0].description
   );
 
-  updateWeatherEmoji(
+  updateWeatherIcon(
     "#forecast-3-icon",
     weatherList[firstIndex + 24].weather[0].icon,
     weatherList[firstIndex + 24].weather[0].description
@@ -290,6 +305,7 @@ function displayWeatherForecast(response, localTime) {
   changeInnerHTML("#forecast-day-3", provideWeekday((localDays + 4) % 7));
 }
 
+//uses the city and localtime to provide a daily weatherforecast
 function getWeatherForecast(city, localTime) {
   let apiKey = "ec993fa98c77b985fc9c225a40d800db";
   let apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&&units=metric`;
@@ -298,16 +314,30 @@ function getWeatherForecast(city, localTime) {
   });
 }
 
+//Changing the display on the page
+function changeInnerHTML(query, innerHTML) {
+  let htmlElement = document.querySelector(query);
+  htmlElement.innerHTML = innerHTML;
+}
+
+//on load default city
+function defaultContent() {
+  axios.get(getApiUrl("Cologne")).then(updateTemperature);
+}
+
+//on load default city
 defaultContent();
 
+//reacting to events on the page
+//when clicking on the search button
 document
   .querySelector(".searchButton")
   .addEventListener("click", mainUpdateEverything);
 
+//when clicking on the unit converter (°F or °C)
 document.querySelector(".unitConverter").addEventListener("click", changeUnit);
 
+//when clicking on the gps button
 document
   .querySelector(".gpsButton")
   .addEventListener("click", handlePositionClick);
-
-//window.onload = main();
