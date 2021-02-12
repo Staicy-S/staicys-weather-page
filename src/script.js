@@ -163,6 +163,11 @@ function updateWeatherDetails(data) {
   document.querySelector("#feels-like").innerHTML = Math.round(
     data.main.feels_like
   );
+  let windSpeed = data.wind.speed;
+  if (windSpeed > 39) {
+    document.querySelector(".warning").className =
+      "fas fa-exclamation-triangle";
+  }
 }
 
 //GPS Weather
