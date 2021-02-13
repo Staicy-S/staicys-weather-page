@@ -46,6 +46,11 @@ body {
   width: auto;
 }
 
+.temperatures {
+  font-weight: 600;
+  min-width: 140px;
+}
+
 .temperatures ul li {
   padding-left: 20px;
 }
@@ -56,11 +61,6 @@ body {
   width: auto;
   position: relative;
   top: -2px;
-}
-
-.temperatures {
-  font-weight: 600;
-  min-width: 140px;
 }
 
 .degreesFahrenheit {
@@ -140,14 +140,14 @@ body {
   transition: ease-in-out 200ms;
 }
 
-.searchButton:hover .fa-search {
-  color: white;
-  transition: ease-in-out 200ms;
-}
-
 .fa-search {
   padding: 1px;
   color: #006ec5;
+}
+
+.searchButton:hover .fa-search {
+  color: white;
+  transition: ease-in-out 200ms;
 }
 
 h1 .fa-cloud {
